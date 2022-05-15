@@ -38,6 +38,64 @@ class FrontController extends Controller
            
         
         }
+
+        //-----Brands-----//
+
+        $result['brands_home'] = DB::table('brands')
+                                    ->where(["status"=>1])
+                                    ->where(["is_home"=>1])
+                                    ->get();   
+                                    
+        //-----is_Featured-----//                 
+        $result['featured_products_home'][$list->id]=
+                DB::table('products')
+                ->where(['status'=>1])
+                ->where(['is_featured'=>1])
+                ->get();
+
+            foreach($result['featured_products_home'][$list->id] as $list1){
+                $result['featured_products_attr_home'][$list1->id]=
+                        DB::table('products_attr')
+                        ->leftJoin('sizes', 'sizes.id','=','products_attr.size_id')
+                        ->leftJoin('colors', 'colors.id','=','products_attr.color_id')
+                        ->where(['products_attr.products_id'=>$list1->id])
+                        ->get();
+                
+            }
+
+        //-----is_tranding-----//                 
+        $result['tranding_products_home'][$list->id]=
+        DB::table('products')
+        ->where(['status'=>1])
+        ->where(['is_tranding'=>1])
+        ->get();
+
+            foreach($result['tranding_products_home'][$list->id] as $list1){
+                $result['tranding_products_attr_home'][$list1->id]=
+                        DB::table('products_attr')
+                        ->leftJoin('sizes', 'sizes.id','=','products_attr.size_id')
+                        ->leftJoin('colors', 'colors.id','=','products_attr.color_id')
+                        ->where(['products_attr.products_id'=>$list1->id])
+                        ->get();
+                
+            }
+
+         //-----is_discounted-----//                 
+         $result['discounted_products_home'][$list->id]=
+         DB::table('products')
+         ->where(['status'=>1])
+         ->where(['is_discounted'=>1])
+         ->get();
+ 
+             foreach($result['discounted_products_home'][$list->id] as $list1){
+                 $result['discounted_products_attr_home'][$list1->id]=
+                         DB::table('products_attr')
+                         ->leftJoin('sizes', 'sizes.id','=','products_attr.size_id')
+                         ->leftJoin('colors', 'colors.id','=','products_attr.color_id')
+                         ->where(['products_attr.products_id'=>$list1->id])
+                         ->get();
+                 
+             }
         // echo "<pre>";
         // print_r($result); 
         // die();
