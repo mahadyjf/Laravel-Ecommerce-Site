@@ -12,9 +12,11 @@ class FrontController extends Controller
   
     public function index(Request $request)
     {
+        
         $result['categories_home'] = DB::table('categories')
                                     ->where(["status"=>1])
                                     ->where(["is_home"=>1])
+                                    ->limit(4)
                                     ->get();                          
 
         foreach($result['categories_home'] as $list){

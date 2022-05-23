@@ -27,9 +27,15 @@
                     <div class="col-md-4">
                         <label for="parent_category_id" class="control-label mb-1">Parent Category</label>
                         <select name="parent_category_id" class="form-control" aria-required="true" aria-invalid="false" required>
-                            
+                          
+                            <option value="0">Select Category</option>
+                          
                             @foreach($category as $cat)
+                                @if($parent_category_id == $cat->id)
+                                <option selected value="{{$cat->id}}">{{$cat->category_name}}</option>
+                                @else
                                 <option value="{{$cat->id}}">{{$cat->category_name}}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
