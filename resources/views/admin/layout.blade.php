@@ -134,6 +134,11 @@
                             <a href="{{url('admin/customer')}}">
                                 <i class="fas fa-user"></i>Customer</a>
                         </li>
+
+                        <li class="@yield('home_banner_active')">
+                            <a href="{{url('admin/home_banner')}}">
+                                <i class="fas fa-image"></i>Home Banner</a>
+                        </li>
                         
                         
                         
