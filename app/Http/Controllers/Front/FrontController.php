@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class FrontController extends Controller
 {
+    
   
     public function index(Request $request)
     {
@@ -116,6 +117,47 @@ class FrontController extends Controller
         
         
         return view('front.home', $result);
+    }
+
+
+    public function product_detail(Request $request, $slug)
+    {
+        $result['product_detail']=
+         DB::table('products')
+         ->where(['status'=>1])
+         ->where(['slug'=>$slug])
+         ->get();
+ 
+             foreach($result['product_detail'] as $list1){
+                 $result['product_detail_attr'][$list1->id]=
+                         DB::table('products_attr')
+                         ->leftJoin('sizes', 'sizes.id','=','products_attr.size_id')
+                         ->leftJoin('colors', 'colors.id','=','products_attr.color_id')
+                         ->where(['products_attr.products_id'=>$list1->id])
+                         ->get();
+                 
+             }
+
+
+        $result['related_product']=
+         DB::table('products')
+         ->where(['status'=>1])
+         ->where('slug', '!=', $result['product_detail'][0]->slug)
+         ->where(['category_id'=>$result['product_detail'][0]->category_id])
+         ->get();
+ 
+             foreach($result['related_product'] as $list1){
+                 $result['related_product_attr'][$list1->id]=
+                         DB::table('products_attr')
+                         ->leftJoin('sizes', 'sizes.id','=','products_attr.size_id')
+                         ->leftJoin('colors', 'colors.id','=','products_attr.color_id')
+                         ->where(['products_attr.products_id'=>$list1->id])
+                         ->get();
+                 
+             }
+            //  prx($result);
+        return view("front.product-detail", $result);
+        
     }
 
 

@@ -102,15 +102,15 @@
                     <div class="tab-pane fade {{$cat_class}}" id="cat{{$list->id}}">
                       <ul class="aa-product-catg">
                        
-                        @if(isset($categories_products_home[$list->id]))
+                        @if(isset($categories_products_home[$list->id][0]))
 
                           @foreach($categories_products_home[$list->id] as $products)
                             <li>
                               <figure>
-                                <a class="aa-product-img" href="{{url('product/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
+                                <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
                                 <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                 <figcaption>
-                                  <h4 class="aa-product-title"><a href="{{url('product/'.$products->slug)}}">{{$products->name}}</a></h4>
+                                  <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                                   <span class="aa-product-price">$ {{$products_attr_home[$products->id][0]->price}}</span>
                                   <span class="aa-product-price"><del>$ {{$products_attr_home[$products->id][0]->mrp}}</del></span>
                                 </figcaption>
@@ -257,15 +257,15 @@
                 <div class="tab-pane fade in active" id="featured">
                  <ul class="aa-product-catg aa-featured-slider">
                     <!-- start single product item -->
-                    @if(isset($featured_products_home[$list->id]))
+                    @if(isset($featured_products_home[$list->id][0]))
 
                           @foreach($featured_products_home[$list->id] as $products)
                             <li>
                               <figure>
-                                <a class="aa-product-img" href="{{url('product/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
+                                <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
                                 <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                 <figcaption>
-                                  <h4 class="aa-product-title"><a href="{{url('product/'.$products->slug)}}">{{$products->name}}</a></h4>
+                                  <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                                   <span class="aa-product-price">$ {{$featured_products_attr_home[$products->id][0]->price}}</span>
                                   <span class="aa-product-price"><del>$ {{$featured_products_attr_home[$products->id][0]->mrp}}</del></span>
                                 </figcaption>
@@ -291,15 +291,15 @@
                  <div class="tab-pane fade" id="tranding">
                   <ul class="aa-product-catg aa-tranding-slider">
                     <!-- start single product item -->
-                    @if(isset($tranding_products_home[$list->id]))
+                    @if(isset($tranding_products_home[$list->id][0]))
 
                     @foreach($tranding_products_home[$list->id] as $products)
                       <li>
                         <figure>
-                          <a class="aa-product-img" href="{{url('product/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
+                          <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
                           <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
-                            <h4 class="aa-product-title"><a href="{{url('product/'.$products->slug)}}">{{$products->name}}</a></h4>
+                            <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                             <span class="aa-product-price">$ {{$tranding_products_attr_home[$products->id][0]->price}}</span>
                             <span class="aa-product-price"><del>$ {{$tranding_products_attr_home[$products->id][0]->mrp}}</del></span>
                           </figcaption>
@@ -324,15 +324,15 @@
                 <div class="tab-pane fade" id="discounted">
                   <ul class="aa-product-catg aa-discounted-slider">
                     <!-- start single product item -->
-                    @if(isset($discounted_products_home[$list->id]))
+                    @if(isset($discounted_products_home[$list->id][0]))
 
                     @foreach($discounted_products_home[$list->id] as $products)
                       <li>
                         <figure>
-                          <a class="aa-product-img" href="{{url('product/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
+                          <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
                           <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
-                            <h4 class="aa-product-title"><a href="{{url('product/'.$products->slug)}}">{{$products->name}}</a></h4>
+                            <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                             <span class="aa-product-price">$ {{$discounted_products_attr_home[$products->id][0]->price}}</span>
                             <span class="aa-product-price"><del>$ {{$discounted_products_attr_home[$products->id][0]->mrp}}</del></span>
                           </figcaption>

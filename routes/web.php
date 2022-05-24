@@ -28,6 +28,7 @@ use App\Http\Controllers\Front\FrontController;
 
 //Front End
 Route::get('/', [FrontController::class, 'index']);
+Route::get('/product_detail/{slug}', [FrontController::class, 'product_detail']);
 //Front End
 
 //Admin 

@@ -4183,3 +4183,15 @@ img {
   }
 }
 
+.lead_time{
+    margin-top: -15px;
+    font-size: 12px;
+    color: red;
+}
+.aa-color-red{
+  background-color: red;
+}
+.aa-color-blue{
+  background-color: blue;
+}
+
