@@ -438,3 +438,9 @@ function deleteCartProduct(pid, size, color, attr_id){
   jQuery('#cart_box'+attr_id).remove();
   
 }
+
+function short_by(){
+  var value = jQuery('#short_by_val').val();
+  jQuery('#short').val(value);
+  jQuery('#shortByForm').submit();
+}

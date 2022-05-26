@@ -30,6 +30,7 @@ use App\Http\Controllers\Front\FrontController;
 Route::get('/', [FrontController::class, 'index']);
 Route::get('/product_detail/{slug}', [FrontController::class, 'product_detail']);
 Route::get('/cart', [FrontController::class, 'cart']);
+Route::get('/products/{slug}', [FrontController::class, 'products']);
 Route::post('add_to_cart', [FrontController::class, 'add_to_cart']);
 
 //Front End

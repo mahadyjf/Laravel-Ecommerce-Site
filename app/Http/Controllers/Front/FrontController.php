@@ -261,7 +261,56 @@ class FrontController extends Controller
        return view('front.cart', $result);
    }
 
-    
+    function products(Request $request, $slug){
+
+        $short="";
+        $short_text='';
+
+        if($request->get('short') !== null){
+            $short = $request->get('short');
+        }
+
+        $query = DB::table('products');
+        $query = $query->leftJoin('categories', 'categories.id','=','products.category_id');
+        $query = $query->leftJoin('products_attr', 'products_attr.products_id','=','products.id');
+        $query = $query->where(['products.status'=>1]);
+        $query = $query->where(['categories.category_slug'=>$slug]);
+        if($short=='name'){
+            $query = $query->orderBy('products.name', 'asc');
+            $short_text = "Product Name";
+        }
+        if($short=='date'){
+            $query = $query->orderBy('products.id', 'desc');
+            $short_text = "Date";
+        }
+        if($short=='price_asc'){
+            $query = $query->orderBy('products_attr.price', 'asc');
+            $short_text = "Price ASC";
+        }
+        if($short=='price_desc'){
+            $query = $query->orderBy('products_attr.price', 'desc');
+            $short_text = "Price DESC";
+        }
+        $query = $query->distinct()->select('products.*');
+        $query = $query->get();
+
+        
+        $result['products']=$query;
+
+            foreach($result['products'] as $list1){
+                $result['products_attr'][$list1->id]=
+                        DB::table('products_attr')
+                        ->leftJoin('sizes', 'sizes.id','=','products_attr.size_id')
+                        ->leftJoin('colors', 'colors.id','=','products_attr.color_id')
+                        ->where(['products_attr.products_id'=>$list1->id])
+                        ->get();
+                
+            }
+            // prx($result);
+            $result['short_text']=$short_text;
+            $result['short']=$short;
+        return view('front.products', $result);
+    }
 
    
    

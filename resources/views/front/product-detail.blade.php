@@ -206,8 +206,8 @@
                 @foreach($related_product as $products)
                   <li>
                     <figure>
-                      <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
-                      <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                      <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" height="250px" width="300px" alt="polo shirt img"></a>
+                      <a class="aa-add-card-btn" href="javascript:void(0)" onclick="addToCart('{{$products->id}}', '{{$related_product_attr[$products->id][0]->size_id}}', '{{$related_product_attr[$products->id][0]->color_id}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                       <figcaption>
                         <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                         <span class="aa-product-price">$ {{$related_product_attr[$products->id][0]->price}}</span>

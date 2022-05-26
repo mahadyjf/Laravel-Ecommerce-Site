@@ -109,7 +109,7 @@
                             <li>
                               <figure>
                                 <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" height="250px" width="300px" alt="polo shirt img"></a>
-                                <a class="aa-add-card-btn"href="javascript:void(0)" onclick="homeaddToCart('{{$products->id}}', '{{$products_attr_home[$products->id][0]->size}}', '{{$products_attr_home[$products->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                                <a class="aa-add-card-btn" href="javascript:void(0)" onclick="homeaddToCart('{{$products->id}}', '{{$products_attr_home[$products->id][0]->size}}', '{{$products_attr_home[$products->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                 <figcaption>
                                   <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                                   <span class="aa-product-price">$ {{$products_attr_home[$products->id][0]->price}}</span>
@@ -264,7 +264,7 @@
                             <li>
                               <figure>
                                 <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" height="250px" width="300px" alt="polo shirt img"></a>
-                                <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                                <a class="aa-add-card-btn" href="javascript:void(0)" onclick="homeaddToCart('{{$products->id}}', '{{$featured_products_attr_home[$products->id][0]->size}}', '{{$featured_products_attr_home[$products->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                 <figcaption>
                                   <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                                   <span class="aa-product-price">$ {{$featured_products_attr_home[$products->id][0]->price}}</span>
@@ -298,7 +298,7 @@
                       <li>
                         <figure>
                           <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" height="250px" width="300px" alt="polo shirt img"></a>
-                          <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                          <a class="aa-add-card-btn" href="javascript:void(0)" onclick="homeaddToCart('{{$products->id}}', '{{$tranding_products_attr_home[$products->id][0]->size}}', '{{$tranding_products_attr_home[$products->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
                             <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                             <span class="aa-product-price">$ {{$tranding_products_attr_home[$products->id][0]->price}}</span>
@@ -331,7 +331,7 @@
                       <li>
                         <figure>
                           <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" height="250px" width="300px" alt="polo shirt img"></a>
-                          <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                          <a class="aa-add-card-btn" href="javascript:void(0)" onclick="homeaddToCart('{{$products->id}}', '{{$discounted_products_attr_home[$products->id][0]->size}}', '{{$discounted_products_attr_home[$products->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
                             <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                             <span class="aa-product-price">$ {{$discounted_products_attr_home[$products->id][0]->price}}</span>
