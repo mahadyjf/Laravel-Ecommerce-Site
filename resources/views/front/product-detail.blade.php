@@ -1,4 +1,5 @@
 @extends('front/layout')
+@section('title', $product_detail[0]->name)
 @section('container')
 
   <!-- product category -->
@@ -17,9 +18,14 @@
                         <div class="simpleLens-big-image-container"><a data-lens-image="{{ asset('storage/'.$product_detail[0]->image) }}" class="simpleLens-lens-image"><img src="{{ asset('storage/'.$product_detail[0]->image) }}" class="simpleLens-big-image"></a></div>
                       </div>
                       <div class="simpleLens-thumbnails-container">
-                          <a data-big-image="{{ asset('storage/'.$product_detail[0]->image) }}" data-lens-image="{{ asset('storage/'.$product_detail[0]->image) }}" class="simpleLens-thumbnail-wrapper" href="#">
-                            <img src="{{ asset('storage/'.$product_detail[0]->image) }}" height="50px">
-                          </a>                                    
+                        @if($product_image[$product_detail[0]->id][0])
+                          @foreach($product_image[$product_detail[0]->id] as $list)
+                          <a data-big-image="{{ asset('storage/'.$list->image) }}" data-lens-image="{{ asset('storage/'.$list->image) }}" class="simpleLens-thumbnail-wrapper" href="#">
+                            <img src="{{ asset('storage/'.$list->image) }}" height="50px">
+                          </a>     
+                          @endforeach
+                        @endif
+                                                         
                           
                       </div>
                     </div>
@@ -36,34 +42,48 @@
                       <p class="lead_time">Delivery Time: <span>{{$product_detail[0]->lead_time}}</span></p>
                     </div>
                     {!! $product_detail[0]->short_desc !!}
+                    @if($product_detail_attr[$product_detail[0]->id][0]->size_id>0)
                     <h4>Size</h4>
                     <div class="aa-prod-view-size">
-                      @foreach($product_detail_attr[$product_detail[0]->id] as $attr)
-                        @if($attr->size != '')
-                          <a href="#">{{$attr->size}}</a>
+                      @php
+                        $arrSize = [];
+                        foreach($product_detail_attr[$product_detail[0]->id] as $attr){
+                          $arrSize[] = $attr->size;
+                        }
+                          $arrSize=array_unique($arrSize);
+                      @endphp
+                      @foreach($arrSize as $attr)
+                        @if($attr != '')
+                          <a href="javascript:void(0)" onclick="showColor('{{$attr}}')" id="size_{{$attr}}" class="size_link">{{$attr}}</a>
                         @endif
                       @endforeach
                     </div>
+                    
+                    @endif
+
+                    @if($product_detail_attr[$product_detail[0]->id][0]->color_id>0)
                     <h4>Color</h4>
                     <div class="aa-color-tag">
                       @foreach($product_detail_attr[$product_detail[0]->id] as $attr)
+                      @php
+                     
+                      @endphp
                         @if($attr->color != '')
-                          <a href="#" class="aa-color-{{strtolower($attr->color)}}"></a>
+                          <a href="javascript:void(0)" class="aa-color-{{strtolower($attr->color)}} product_color size_{{$attr->size}}" onclick='change_product_color_image("{{ asset("storage/".$attr->attr_image) }}", "{{$attr->color}}")'></a>
                           
                         @endif
                       @endforeach
                       
                                         
                     </div>
+                    @endif
                     <div class="aa-prod-quantity">
                       <form action="">
-                        <select id="" name="">
-                          <option selected="1" value="0">1</option>
-                          <option value="1">2</option>
-                          <option value="2">3</option>
-                          <option value="3">4</option>
-                          <option value="4">5</option>
-                          <option value="5">6</option>
+                        <select id="qty" name="qty">
+                          @for($i=1; $i<11; $i++)
+                          <option value="{{$i}}">{{$i}}</option>
+                          @endfor
+                          
                         </select>
                       </form>
                       <p class="aa-prod-category">
@@ -71,9 +91,8 @@
                       </p>
                     </div>
                     <div class="aa-prod-view-bottom">
-                      <a class="aa-add-to-cart-btn" href="#">Add To Cart</a>
-                      <a class="aa-add-to-cart-btn" href="#">Wishlist</a>
-                      <a class="aa-add-to-cart-btn" href="#">Compare</a>
+                      <a class="aa-add-to-cart-btn" href="javascript:void(0)" onclick="addToCart('{{$product_detail[0]->id}}', '{{$product_detail_attr[$product_detail[0]->id][0]->size_id}}', '{{$product_detail_attr[$product_detail[0]->id][0]->color_id}}')">Add To Cart</a>
+                      <div id="addToCart_mag"></div>
                     </div>
                   </div>
                 </div>
@@ -296,5 +315,12 @@
     </div>
   </section>
   <!-- / product category -->
+  <form id="addToCartForm">
+  <input type="hidden" id="size_id" name="size_id">
+  <input type="hidden" id="color_id" name="color_id">
+  <input type="hidden" id="product_id" name="product_id">
+  <input type="hidden" id="pqty" name="pqty">
+  @csrf
+  </form>
 
 @endsection

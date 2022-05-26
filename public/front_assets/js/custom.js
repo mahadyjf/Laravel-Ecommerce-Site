@@ -357,3 +357,84 @@ jQuery(function($){
     
 });
 
+function change_product_color_image(img, color){
+  jQuery('#color_id').val(color);
+  jQuery('.simpleLens-big-image-container').html('<a data-lens-image="'+img+'" class="simpleLens-lens-image"><img src="'+img+'" class="simpleLens-big-image"></a>')
+}
+
+function showColor(size){
+  jQuery('#size_id').val(size);
+  jQuery('.product_color').hide();
+  jQuery('.size_'+size).show();
+  jQuery('.size_link').css('border', '1px solid #ddd');
+  jQuery('#size_'+size).css('border', '1px solid black');
+  
+}
+function homeaddToCart(id, size_str_id, color_str_id){
+  jQuery('#size_id').val(size_str_id);
+  jQuery('#color_id').val(color_str_id);
+  addToCart(id, size_str_id, color_str_id)
+}
+function addToCart(id, size_str_id, color_str_id){
+  jQuery('#addToCart_mag').html("");
+  let size = jQuery('#size_id').val();
+  let color = jQuery('#color_id').val();
+  if(size_str_id == '' && color_str_id == ''){
+    size_str_id = "no";
+    color_str_id = "no";
+  }
+  
+  if(size == '' && size_str_id != "no"){
+    jQuery('#addToCart_mag').html("<div class='alert alert-danger fade in alert-dismissible mt5'><a href='#' class='close' data-dismiss='alert' aria-label='close' title='close'>×</a>Pleas Select <strong>Size!</strong></div>");
+  }else if(color == '' && color_str_id != "no"){
+    jQuery('#addToCart_mag').html("<div class='alert alert-danger fade in alert-dismissible mt5'><a href='#' class='close' data-dismiss='alert' aria-label='close' title='close'>×</a>Pleas Select <strong>Color!</strong></div>");
+  }else{
+    jQuery('#product_id').val(id);
+    jQuery('#pqty').val(jQuery('#qty').val());
+
+    jQuery.ajax({
+      url: '/add_to_cart',
+      data: jQuery('#addToCartForm').serialize(),
+      type: 'post',
+      success: function(result){
+        alert(result.msg);
+        jQuery('#addToCart_mag').html("<div class='alert alert-success fade in alert-dismissible mt5'><a href='#' class='close' data-dismiss='alert' aria-label='close' title='close'>×</a>Product <strong>"+result.msg+"</strong></div>");
+        if(result.totalItem == 0){
+          jQuery('.aa-cart-notify').html('0');
+          jQuery('.aa-cartbox-summary').remove();
+        }else{
+          jQuery('.aa-cart-notify').html(result.totalItem);
+          var html = '<ul>';
+          let totalPrice = 0;
+          jQuery.each(result.data, function(arrkey, arrval){
+             totalPrice = totalPrice+(arrval.price*arrval.qty);
+            html+= '<li><a class="aa-cartbox-img" href="'+PRODUCT_DETAIL_PAGE+'/'+arrval.slug+'"><img src="'+PRODUCT_IMAGE+'/'+arrval.image+'" alt="img"></a><div class="aa-cartbox-info"><h4><a href="'+PRODUCT_DETAIL_PAGE+'/'+arrval.slug+'">'+arrval.name+'</a></h4> <p>'+arrval.qty+' x $'+arrval.price*arrval.qty+'</p></div></li>';
+            
+          });
+          html+='<li><span class="aa-cartbox-total-title">Total</span><span class="aa-cartbox-total-price">$'+totalPrice+'</span></li>';
+          html+='</ul>';
+          html+='<a class="aa-cartbox-checkout aa-primary-btn" href="'+CHECKOUT+'">Checkout</a>'
+            jQuery('.aa-cartbox-summary').html(html);
+        }
+      }
+    });
+  }
+}
+
+function updateQty(pid, size, color, attr_id, price){
+  jQuery('#size_id').val(size);
+  jQuery('#color_id').val(color);
+  let qty =jQuery('#qty'+attr_id).val();
+  jQuery('#qty').val(qty);
+  addToCart(pid, size, color)
+  jQuery('#total_price_'+attr_id).html('$ '+qty*price)
+}
+
+function deleteCartProduct(pid, size, color, attr_id){
+  jQuery('#size_id').val(size);
+  jQuery('#color_id').val(color);
+  jQuery('#qty').val(0);
+  addToCart(pid, size, color)
+  jQuery('#cart_box'+attr_id).remove();
+  
+}

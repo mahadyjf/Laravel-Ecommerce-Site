@@ -53,4 +53,37 @@ function buildTreeView($arr,$parent,$level=0,$prelevel= -1){
 	return $html;
 }
 
+function getUserTempId(){
+
+	if( session()->has('USER_TEMP_ID') === false){
+		$rand = rand(111111111, 999999999);
+		session()->put('USER_TEMP_ID', $rand);
+		return $rand;
+	}else{
+		return session()->get('USER_TEMP_ID');
+	}
+}
+
+function layoutCartData(){
+	if(session()->has('FRONT_USER_LOGIN')){
+        $uid = session()->get('FRONT_USER_LOGIN');
+        $utype="Reg";
+    }else{
+        $uid = getUserTempId();
+        $utype="Not-Reg";
+    }
+
+	$result=DB::table('cart')
+       ->leftJoin('products', 'products.id','=','cart.product_id')
+       ->leftJoin('products_attr', 'products_attr.id','=','cart.product_attr_id')
+       ->leftJoin('sizes', 'sizes.id','=','products_attr.size_id')
+        ->leftJoin('colors', 'colors.id','=','products_attr.color_id')
+        ->where(['user_id'=>$uid])
+        ->where(['user_type'=>$utype])
+        ->select('cart.qty', 'products.name', 'products.image', 'sizes.size', 'colors.color', 'products.slug', 'products_attr.price', 'products_attr.id as attr_id', 'products.id as pid')
+        ->get();
+        // prx($result);
+       return $result;
+}
+
 ?>

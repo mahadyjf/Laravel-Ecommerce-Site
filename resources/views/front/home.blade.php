@@ -1,4 +1,5 @@
 @extends('front/layout')
+@section('title', "Home || Daily Shop")
 @section('container')
 
 <section id="aa-slider">
@@ -51,7 +52,7 @@
                   @foreach($categories_home as $list)
                     <div class="aa-single-promo-right">
                         <div class="aa-promo-banner">                      
-                        <img src="{{ asset('storage/category/'.$list->category_img) }}" alt="img">                      
+                        <img src="{{ asset('storage/category/'.$list->category_img) }}"  alt="img">                      
                         <div class="aa-prom-content">
                             <h4><a href="{{url('ctegory/'.$list->category_slug)}}">{{$list->category_name}}</a></h4>                        
                         </div>
@@ -107,8 +108,8 @@
                           @foreach($categories_products_home[$list->id] as $products)
                             <li>
                               <figure>
-                                <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
-                                <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                                <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" height="250px" width="300px" alt="polo shirt img"></a>
+                                <a class="aa-add-card-btn"href="javascript:void(0)" onclick="homeaddToCart('{{$products->id}}', '{{$products_attr_home[$products->id][0]->size}}', '{{$products_attr_home[$products->id][0]->color}}')"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                 <figcaption>
                                   <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
                                   <span class="aa-product-price">$ {{$products_attr_home[$products->id][0]->price}}</span>
@@ -262,7 +263,7 @@
                           @foreach($featured_products_home[$list->id] as $products)
                             <li>
                               <figure>
-                                <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
+                                <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" height="250px" width="300px" alt="polo shirt img"></a>
                                 <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                 <figcaption>
                                   <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
@@ -296,7 +297,7 @@
                     @foreach($tranding_products_home[$list->id] as $products)
                       <li>
                         <figure>
-                          <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
+                          <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" height="250px" width="300px" alt="polo shirt img"></a>
                           <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
                             <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
@@ -329,7 +330,7 @@
                     @foreach($discounted_products_home[$list->id] as $products)
                       <li>
                         <figure>
-                          <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" alt="polo shirt img"></a>
+                          <a class="aa-product-img" href="{{url('product_detail/'.$products->slug)}}"><img src="{{ asset('storage/'.$products->image) }}" height="250px" width="300px" alt="polo shirt img"></a>
                           <a class="aa-add-card-btn"href="#"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                           <figcaption>
                             <h4 class="aa-product-title"><a href="{{url('product_detail/'.$products->slug)}}">{{$products->name}}</a></h4>
@@ -417,5 +418,13 @@
     </div>
   </section>
   <!-- / Client Brand -->
+  <input type="hidden" id="qty" name="qty" value="1">
+  <form id="addToCartForm">
+      <input type="hidden" id="size_id" name="size_id">
+      <input type="hidden" id="color_id" name="color_id">
+    <input type="hidden" id="product_id" name="product_id">
+    <input type="hidden" id="pqty" name="pqty">
+    @csrf
+    </form>
 
 @endsection
