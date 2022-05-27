@@ -2030,7 +2030,7 @@ img {
 }
 #aa-product-category .aa-product-catg-content .aa-product-catg-body .aa-product-catg li {
   margin: 0 0 20px 30px;
-  width: 29.916%;
+  width: 29%;
 }
 #aa-product-category .aa-product-catg-content .aa-product-catg-body .aa-product-catg li .aa-product-descrip {
   display: none;
@@ -2604,6 +2604,7 @@ img {
 /*---- Login form ----*/
 
 .aa-login-form input[type="text"],
+.aa-login-form input[type="email"],
 .aa-login-form input[type="password"] {
   border: 1px solid #ccc;
   font-size: 16px;
@@ -4197,4 +4198,15 @@ img {
 .mt5{
   margin-top: 10px;
 }
+.active_class{
+  box-shadow: #ddd 5px 5px 10px;
+}
+.active_cat{
+  color:rgb(240, 49, 49);
+}
 
+.field_error{
+  color: red;
+  margin-top: -15px;
+  font-size: 16px;
+}

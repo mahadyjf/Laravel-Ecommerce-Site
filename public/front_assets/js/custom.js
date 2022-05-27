@@ -460,8 +460,43 @@ function short_price_filter(){
   jQuery('#shortByForm').submit();
 }
 
-function color_filter(color){
+function color_filter(color, type){
   var ex = jQuery('#filter_color').val();
-  jQuery('#filter_color').val(color+':'+ex);
+  if(type == 1){
+    var new_color = ex.replace(color+':', '');
+    jQuery('#filter_color').val(new_color);
+  
+  }else{
+    jQuery('#filter_color').val(color+':'+ex);
+  jQuery('#shortByForm').submit();
+  }
   jQuery('#shortByForm').submit();
 }
+
+function funSearch(){
+  var search = jQuery('#search').val();
+  if(search != '' && search.length>3){
+    window.location.href= '/search/'+search;
+  }
+}
+
+jQuery('#registrationFrm').submit(function(e){
+  e.preventDefault();
+  jQuery('.field_error').html('');
+  jQuery.ajax({
+    url: 'registration_prosses',
+    data: jQuery('#registrationFrm').serialize(),
+    type: 'post',
+    success: function(result){
+      if(result.status=="error"){
+        jQuery.each(result.error, function(key, val){
+          jQuery('#'+key+'_error').html(val[0]);
+        });
+      }
+      if(result.status=="success"){
+        jQuery('#registrationFrm')[0].reset();
+        jQuery('#success_msg').html(result.msg);
+      }
+    }
+  });
+})

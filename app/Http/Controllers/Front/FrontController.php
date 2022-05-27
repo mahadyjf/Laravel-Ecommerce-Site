@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Crypt;
 
 class FrontController extends Controller
 {
@@ -343,12 +345,73 @@ class FrontController extends Controller
             $result['short_price_end']=$short_price_end;
             $result['filter_color']=$filter_color;
             $result['arrcolorfilter']=$arrcolorfilter;
+            $result['slug']=$slug;
            
             
             
         return view('front.products', $result);
     }
 
+
+  public function search(Request $request, $str)
+    {
+        $result['search']=
+         DB::table('products')
+         ->where(['status'=>1])
+         ->where('name', 'like', "%$str%")
+         ->orwhere('model', 'like', "%$str%")
+         ->orwhere('short_desc', 'like', "%$str%")
+         ->orwhere('desc', 'like', "%$str%")
+         ->orwhere('keywords', 'like', "%$str%")
+         ->distinct()->select('products.*')
+         ->get();
+ 
+             foreach($result['search'] as $list1){
+                 $result['search_attr'][$list1->id]=
+                         DB::table('products_attr')
+                         ->leftJoin('sizes', 'sizes.id','=','products_attr.size_id')
+                         ->leftJoin('colors', 'colors.id','=','products_attr.color_id')
+                         ->where(['products_attr.products_id'=>$list1->id])
+                         ->get();
+                 
+             }
+            //  prx($result);
+             return view('front.search', $result);
+    }
+
+    public function registration(Request $request)
+    {
+       
+        return view('front.registration');
+    }
+    public function registration_prosses(Request $request)
+    {
+       $valid=Validator::make($request->all(),[
+            "name"=>'required',
+            "email"=>'required|email|unique:customers,email',
+            "mobile"=>'required|min:8|max:10',
+            "password"=>'required'
+            
+       ]);
+       if(!$valid->passes()){
+           return response()->json(['status'=>'error', 'error'=>$valid->errors()->toArray()]);
+       }else{
+           $arr=[
+               "name"=>$request->name,
+               "email"=>$request->email,
+               "mobile"=>$request->mobile,
+               "password"=>Crypt::encrypt($request->password),
+               "status"=>1,
+               "created_at"=>date('Y-m-d h:i:s'),
+               "updated_at"=>date('Y-m-d h:i:s')
+           ];
+
+           $query = DB::table('customers')->insert($arr);
+           if($query){
+               return response()->json(['status'=>'success', 'msg'=>'Registration Successfully']);
+           }
+       }
+    }
    
    
 }

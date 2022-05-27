@@ -87,7 +87,12 @@
               <h3>Category</h3>
               <ul class="aa-catg-nav">
                 @foreach($categories as $cat)
-                <li><a href="#">{{$cat->category_name}}</a></li>
+                  @if($cat->category_slug == $slug)
+                <li><a class="active_cat" href="{{url('products/'.$cat->category_slug)}}">{{$cat->category_name}}</a></li>
+                @else
+                <li><a href="{{url('products/'.$cat->category_slug)}}">{{$cat->category_name}}</a></li>
+                @endif
+
                 @endforeach
               </ul>
             </div>
@@ -111,7 +116,11 @@
               <h3>Shop By Color</h3>
               <div class="aa-color-tag">
                 @foreach($color as $color)
-                <a class="aa-color-{{strtolower($color->color)}}" href="javascript:void(0)" onclick="color_filter('{{$color->id}}')"></a>
+                @if(in_array($color->id, $arrcolorfilter))
+                <a class="aa-color-{{strtolower($color->color)}} active_class" href="javascript:void(0)" onclick="color_filter('{{$color->id}}', 1)"></a>
+                @else
+                <a class="aa-color-{{strtolower($color->color)}}" href="javascript:void(0)" onclick="color_filter('{{$color->id}}', 0)"></a>
+                @endif
                 @endforeach
               </div>
             </div>
@@ -137,7 +146,7 @@
         <input type="hidden" id="short" name="short" value="{{$short}}">
         <input type="hidden" id="short_price_start" name="short_price_start" value="{{$short_price_start}}">
         <input type="hidden" id="short_price_end" name="short_price_end" value="{{$short_price_end}}">
-        <input type="text" id="filter_color" name="filter_color" value="{{$filter_color}}">
+        <input type="hidden" id="filter_color" name="filter_color" value="{{$filter_color}}">
     </form>
 
 @endsection

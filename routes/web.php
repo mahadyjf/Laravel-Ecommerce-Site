@@ -31,7 +31,11 @@ Route::get('/', [FrontController::class, 'index']);
 Route::get('/product_detail/{slug}', [FrontController::class, 'product_detail']);
 Route::get('/cart', [FrontController::class, 'cart']);
 Route::get('/products/{slug}', [FrontController::class, 'products']);
+Route::get('/search/{str}', [FrontController::class, 'search']);
 Route::post('add_to_cart', [FrontController::class, 'add_to_cart']);
+
+Route::get('/registration', [FrontController::class, 'registration']);
+Route::post('registration_prosses', [FrontController::class, 'registration_prosses']);
 
 //Front End
 
