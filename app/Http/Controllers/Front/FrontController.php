@@ -265,6 +265,10 @@ class FrontController extends Controller
 
         $short="";
         $short_text='';
+        $short_price_start='';
+        $short_price_end='';
+        $arrcolorfilter=[];
+        $filter_color='';
 
         if($request->get('short') !== null){
             $short = $request->get('short');
@@ -291,6 +295,21 @@ class FrontController extends Controller
             $query = $query->orderBy('products_attr.price', 'desc');
             $short_text = "Price DESC";
         }
+        if($request->get('short_price_start') !== null && $request->get('short_price_end') !== null){
+            $short_price_start = $request->get('short_price_start');
+            $short_price_end = $request->get('short_price_end');
+            if($short_price_start>0 && $short_price_end>0){
+                $query = $query->whereBetween('products_attr.price', [$short_price_start, $short_price_end]);
+            }
+        }
+        if($request->get('filter_color') !== null){
+            $filter_color = $request->get('filter_color');
+            $arrcolorfilter = explode(':', $filter_color);
+            $arrcolorfilter = array_filter($arrcolorfilter);
+            
+            $query = $query->where(['products_attr.color_id'=> $filter_color]);
+           
+        }
         $query = $query->distinct()->select('products.*');
         $query = $query->get();
 
@@ -306,9 +325,27 @@ class FrontController extends Controller
                         ->get();
                 
             }
-            // prx($result);
+
+
+            $result['color']=
+            DB::table('colors')
+            ->where(['status'=>1])
+            ->get();
+
+            $result['categories']=
+            DB::table('categories')
+            ->where(['status'=>1])
+            ->get();
+            // prx($result['color']);
             $result['short_text']=$short_text;
             $result['short']=$short;
+            $result['short_price_start']=$short_price_start;
+            $result['short_price_end']=$short_price_end;
+            $result['filter_color']=$filter_color;
+            $result['arrcolorfilter']=$arrcolorfilter;
+           
+            
+            
         return view('front.products', $result);
     }
 

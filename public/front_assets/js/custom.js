@@ -240,23 +240,29 @@ jQuery(function($){
     jQuery(function(){
       if($('body').is('.productPage')){
        var skipSlider = document.getElementById('skipstep');
+       var short_price_start = jQuery('#short_price_start').val();
+       var short_price_end = jQuery('#short_price_end').val();
+       if(short_price_start == '' || short_price_end == ''){
+        var short_price_start= 100;
+        var short_price_end= 1500;
+       }
         noUiSlider.create(skipSlider, {
             range: {
                 'min': 0,
-                '10%': 10,
-                '20%': 20,
-                '30%': 30,
-                '40%': 40,
-                '50%': 50,
-                '60%': 60,
-                '70%': 70,
-                '80%': 80,
-                '90%': 90,
-                'max': 100
+                '10%': 100,
+                '20%': 200,
+                '30%': 300,
+                '40%': 400,
+                '50%': 500,
+                '60%': 700,
+                '70%': 1000,
+                '80%': 1300,
+                '90%': 1500,
+                'max': 2000
             },
             snap: true,
             connect: true,
-            start: [20, 70]
+            start: [short_price_start, short_price_end]
         });
         // for value print
         var skipValues = [
@@ -442,5 +448,20 @@ function deleteCartProduct(pid, size, color, attr_id){
 function short_by(){
   var value = jQuery('#short_by_val').val();
   jQuery('#short').val(value);
+  jQuery('#shortByForm').submit();
+}
+
+function short_price_filter(){
+  var valStart = jQuery('#skip-value-lower').html();
+  var valEnd = jQuery('#skip-value-upper').html();
+  
+  jQuery('#short_price_start').val(valStart);
+  jQuery('#short_price_end').val(valEnd);
+  jQuery('#shortByForm').submit();
+}
+
+function color_filter(color){
+  var ex = jQuery('#filter_color').val();
+  jQuery('#filter_color').val(color+':'+ex);
   jQuery('#shortByForm').submit();
 }
