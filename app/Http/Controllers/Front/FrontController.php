@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Crypt;
+use Mail;
 
 class FrontController extends Controller
 {
@@ -389,28 +390,98 @@ class FrontController extends Controller
        $valid=Validator::make($request->all(),[
             "name"=>'required',
             "email"=>'required|email|unique:customers,email',
-            "mobile"=>'required|min:8|max:10',
+            "mobile"=>'required|min:8|max:15',
             "password"=>'required'
             
        ]);
        if(!$valid->passes()){
            return response()->json(['status'=>'error', 'error'=>$valid->errors()->toArray()]);
        }else{
+        $rand = rand(111111111, 999999999);
            $arr=[
                "name"=>$request->name,
                "email"=>$request->email,
                "mobile"=>$request->mobile,
                "password"=>Crypt::encrypt($request->password),
                "status"=>1,
+               "is_verify"=>0,
+               "rand_id"=>$rand,
                "created_at"=>date('Y-m-d h:i:s'),
                "updated_at"=>date('Y-m-d h:i:s')
            ];
 
            $query = DB::table('customers')->insert($arr);
            if($query){
-               return response()->json(['status'=>'success', 'msg'=>'Registration Successfully']);
+               $data=['name'=>$request->name, 'rand'=>$rand];
+               $user['to']=$request->email;
+               Mail::send('front/email_verification', $data, function ($message) use ($user){
+                   
+                   $message->to($user['to']);
+                   $message->subject('Email ID verification');
+               });
+
+               return response()->json(['status'=>'success', 'msg'=>'Registration Successfully. Please check your email id for verification']);
            }
        }
+    }
+
+
+    public function login_prosses(Request $request){
+        
+        $result = DB::table('customers')
+            ->where(['email'=>$request->login_email])
+            ->get();
+       if(isset($result[0])){
+           $db_pwd  = Crypt::decrypt($result[0]->password);
+           $is_verify = $result[0]->is_verify;
+           $status = $result[0]->status;
+           if($is_verify == 0){
+            return response()->json(['status'=>'error', 'msg'=>'Please Verify your email Id']);
+           }
+           if($status == 0){
+            return response()->json(['status'=>'error', 'msg'=>'Your Acount Has Been Deactivet']);
+           }
+            if($db_pwd == $request->login_password){
+                if($request->rememberme===null){
+                    setcookie('login_email', $request->login_email, 100);
+                    setcookie('login_pwd', $request->login_password, 100);
+                }else{
+                    setcookie('login_email', $request->login_email, time()+60*60*24*100);
+                    setcookie('login_pwd', $request->login_password, time()+60*60*24*100);
+                }
+                $request->session()->put('FORNT_USER_LOGIN', true);
+                $request->session()->put('FORNT_USER_ID', $result[0]->id);
+                $request->session()->put('FORNT_USER_NAME', $result[0]->name);
+                $status="success";
+                $msg = "";
+               
+            }else{
+                $status="error";
+                $msg = "Please Enter Valid Password";
+            }
+       }else{
+           $status="error";
+           $msg = "Please Enter Valid Email";
+       }
+       return response()->json(['status'=>$status, 'msg'=>$msg]);
+    }
+
+
+    public function verification(Request $request, $id)
+    {
+        $result = DB::table('customers')
+        ->where(['rand_id'=>$id])
+        ->get();
+        
+        if(isset($result[0])){
+            $name['name'] = $result[0]->name;
+            DB::table('customers')
+            ->where(['id'=>$result[0]->id])
+            ->update(['is_verify'=>1, 'rand_id'=>'']);
+            return view('front.front_user_welcome', $name);
+        }else{
+            return redirect('/');
+        }
     }
    
    

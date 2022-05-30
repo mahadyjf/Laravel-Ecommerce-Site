@@ -34,8 +34,17 @@ Route::get('/products/{slug}', [FrontController::class, 'products']);
 Route::get('/search/{str}', [FrontController::class, 'search']);
 Route::post('add_to_cart', [FrontController::class, 'add_to_cart']);
 
-Route::get('/registration', [FrontController::class, 'registration']);
+Route::get('/registration', [FrontController::class, 'registration'])->middleware('front_user');
 Route::post('registration_prosses', [FrontController::class, 'registration_prosses']);
+Route::post('login_prosses', [FrontController::class, 'login_prosses']);
+Route::get('front_logout', function () {
+    session()->forget('FORNT_USER_LOGIN');
+    session()->forget('FORNT_USER_ID');
+    session()->forget('FORNT_USER_NAME');
+    return redirect('/'); 
+});
+Route::get('/verification/{id}', [FrontController::class, 'verification']);
+
 
 //Front End
 

@@ -500,3 +500,25 @@ jQuery('#registrationFrm').submit(function(e){
     }
   });
 })
+
+
+jQuery('#loginFrm').submit(function(e){
+  e.preventDefault();
+  jQuery('#login_error_msg').html('');
+  jQuery.ajax({
+    url: 'login_prosses',
+    data: jQuery('#loginFrm').serialize(),
+    type: 'post',
+    success: function(result){
+      if(result.status=="error"){
+        jQuery('#login_error_msg').html(result.msg);
+        }
+      if(result.status=="success"){
+        
+        window.location.href= '/';
+        // jQuery('#registrationFrm')[0].reset();
+        // jQuery('#success_msg').html(result.msg);
+      }
+    }
+  });
+})
