@@ -44,6 +44,9 @@ Route::get('front_logout', function () {
     return redirect('/'); 
 });
 Route::get('/verification/{id}', [FrontController::class, 'verification']);
+Route::post('forgot_password', [FrontController::class, 'forgot_password']);
+Route::post('/process_forget_password', [FrontController::class, 'process_forget_password']);
+Route::get('/change_password/{id}', [FrontController::class, 'change_password']);
 
 
 //Front End

@@ -484,5 +484,51 @@ class FrontController extends Controller
         }
     }
    
-   
+   public function forgot_password(Request $request){
+        $result = DB::table('customers')
+        ->where(['email'=>$request->forget_email])
+        ->get();
+        $rand = rand(111111111, 999999999);
+        if(isset($result[0])){
+            DB::table('customers')
+            ->where(['email'=>$request->forget_email])
+            ->update(['is_forgot_password'=>1, 'rand_id'=> $rand]);
+        
+                $data=['name'=>$result[0]->name, 'rand'=>$rand];
+               $user['to']=$request->forget_email;
+               Mail::send('front/forget_password', $data, function ($message) use ($user){
+                   
+                   $message->to($user['to']);
+                   $message->subject('Forget Password');
+               });
+
+               return response()->json(['msg'=>'Check your email address']);
+        }else{
+            return response()->json(['msg'=>'This email not register!']);
+        }
+   }
+
+   public function change_password(Request $request, $id){
+        $result = DB::table('customers')
+        ->where(['rand_id'=>$id])
+        ->where(['is_forgot_password'=>1])
+        ->get();
+        
+        if(isset($result[0])){
+            $request->session()->put('FORGET_PESS_USER_ID', $result[0]->id);
+            return view('front.change_password');
+        }else{
+            return redirect('/');
+        }
+   }
+
+   public function process_forget_password(Request $request){
+        DB::table('customers')
+            ->where(['id'=>$request->session()->get('FORGET_PESS_USER_ID')])
+            ->update([
+                'is_forgot_password'=>0,
+                'password'=>Crypt::encrypt($request->forget_password),
+                'rand_id'=> '']);
+            return response()->json(['msg'=>'password Changed']);
+   }
 }

@@ -522,3 +522,38 @@ jQuery('#loginFrm').submit(function(e){
     }
   });
 })
+
+function forgotPassword(){
+  jQuery('#forgot_pass_popup').show();
+  jQuery('#login_popup').hide();
+}
+function forgotLogin(){
+  jQuery('#forgot_pass_popup').hide();
+  jQuery('#login_popup').show();
+}
+
+jQuery('#forgotFrm').submit(function(e){
+  e.preventDefault();
+  jQuery('#forgot_error_msg').html('Please wait...');
+  jQuery.ajax({
+    url: 'forgot_password',
+    data: jQuery('#forgotFrm').serialize(),
+    type: 'post',
+    success: function(result){
+        jQuery('#forgot_error_msg').html(result.msg);
+    }
+  });
+})
+
+jQuery('#forgetChangeFrm').submit(function(e){
+  e.preventDefault();
+  jQuery('#forget_success_msg').html('');
+  jQuery.ajax({
+    url: '/process_forget_password',
+    data: jQuery('#forgetChangeFrm').serialize(),
+    type: 'post',
+    success: function(result){
+        jQuery('#forget_success_msg').html(result.msg);
+    }
+  });
+})

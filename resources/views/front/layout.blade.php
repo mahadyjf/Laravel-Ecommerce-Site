@@ -340,21 +340,41 @@
       <div class="modal-content">                      
         <div class="modal-body">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+        <div id="login_popup">
           <h4>Login or Register</h4>
-          <form class="aa-login-form" id="loginFrm" >
-            <label for="">Username or Email address<span>*</span></label>
-            <input type="text" placeholder="Email" name="login_email" value="{{$login_email}}">
-            <label for="">Password<span>*</span></label>
-            <input type="password" placeholder="Password" name="login_password" value="{{$login_pwd}}">
-            @csrf
-            <button class="aa-browse-btn" type="submit" id="loginBtn">Login</button>
-            <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme" name="rememberme" {{$checked}}> Remember me </label>
-            <p style="clear: both; color:red; margin-top: 5px; " id="login_error_msg"></p>
-            <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
-            <div class="aa-register-now">
-              Don't have an account?<a href="{{url('registration')}}">Register now!</a>
-            </div>
-          </form>
+            <form class="aa-login-form" id="loginFrm" >
+              <label for="">Username or Email address<span>*</span></label>
+              <input type="text" placeholder="Email" name="login_email" value="{{$login_email}}">
+              <label for="">Password<span>*</span></label>
+              <input type="password" placeholder="Password" name="login_password" value="{{$login_pwd}}">
+              @csrf
+              <button class="aa-browse-btn" type="submit" id="loginBtn">Login</button>
+              <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme" name="rememberme" {{$checked}}> Remember me </label>
+              <p style="clear: both; color:red; margin-top: 5px; " id="login_error_msg"></p>
+              <p class="aa-lost-password"><a href="javascript:void(0)" onclick="forgotPassword()">Lost your password?</a></p>
+              <div class="aa-register-now">
+                Don't have an account?<a href="{{url('registration')}}">Register now!</a>
+              </div>
+            </form>
+        </div>
+        <div id="forgot_pass_popup" style="display: none">
+          <h4>Forgot Password</h4>
+            <form class="aa-login-form" id="forgotFrm" >
+              <label for="">Username or Email address<span>*</span></label>
+              <input type="text" placeholder="Email" name="forget_email">
+    
+              @csrf
+              <button class="aa-browse-btn" type="submit" id="forgotBtn">Submit</button>
+              
+              <p style="clear: both; color:red; margin-top: 5px; " id="forgot_error_msg"></p>
+          
+              <div class="aa-register-now">
+                Don't have an account?<a href="javascript:void(0)" onclick="forgotLogin()">Login now!</a>
+              </div>
+            </form>
+        </div>
+          
         </div>                        
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
